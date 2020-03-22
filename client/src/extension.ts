@@ -21,7 +21,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     },
     () => {
       const expressModule = context.asAbsolutePath(
-        path.join("express", "express.js")
+        path.join("server", "out", "express.js")
       );
 
       tfjsExpress = cp.spawn("node", [expressModule]);

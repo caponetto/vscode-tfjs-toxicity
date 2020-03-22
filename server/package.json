@@ -13,7 +13,12 @@
   "dependencies": {
     "vscode-languageserver": "^6.1.1",
     "vscode-languageserver-textdocument": "^1.0.1",
-    "axios": "0.19.0"
-  },
-  "scripts": {}
+    "axios": "0.19.0",
+    "@tensorflow-models/toxicity": "1.2.2",
+    "@tensorflow/tfjs-node": "2.4.0",
+    "@types/express": "4.11.1",
+    "@types/cors": "2.8.6",
+    "cors": "2.8.5",
+    "express": "4.17.1"
+  }
 }
