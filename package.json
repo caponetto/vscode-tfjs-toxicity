@@ -1,0 +1,33 @@
+{
+  "name": "vscode-tfjs-toxicity",
+  "description": "Text toxicity classifier",
+  "license": "Apache-2.0",
+  "publisher": "caponetto",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caponetto/vscode-tfjs-toxicity"
+  },
+  "categories": [],
+  "engines": {
+    "vscode": "^1.43.0"
+  },
+  "activationEvents": [
+    "onLanguage:plaintext"
+  ],
+  "main": "./client/out/extension",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "init": "cd client && npm install && cd ../server && npm install && cd ../express && npm install && cd .."
+  },
+  "devDependencies": {
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^12.12.62",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint": "^6.4.0",
+    "mocha": "^8.0.1",
+    "typescript": "^3.9.4"
+  }
+}
