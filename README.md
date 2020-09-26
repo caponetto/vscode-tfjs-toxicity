@@ -12,9 +12,7 @@ Just for fun. :P
 
 1. `client`: Activate the VS Code extension by initializing the express server and establishing a connection with the language server.
 
-1. `server`: Language server side responsible for validating the text document and reporting back the diagnostics to the client.
-
-1. `express`: Simple express server on port 3000 to classify text through POST requests.
+1. `server`: Language server responsible for validating the text document and reporting back the diagnostics to the client. It also includes a simple express server on port 3000 that classifies text toxicity through POST requests.
 
 ## Running the example
 
