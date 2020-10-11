@@ -1,14 +1,14 @@
 {
+  "exclude": ["./**/node_modules"],
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2019",
-    "lib": ["ES2019"],
-    "sourceMap": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"],
-  "references": [
-    { "path": "./client" },
-    { "path": "./server" }
-  ]
+    "lib": ["es6", "dom", "es2018.promise"],
+    "target": "es5",
+    "declaration": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true
+  }
 }

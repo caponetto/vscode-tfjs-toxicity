@@ -1,0 +1,38 @@
+{
+  "name": "vscode-tfjs-toxicity-server",
+  "description": "Text toxicity classifier (Server)",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caponetto/vscode-tfjs-toxicity.git"
+  },
+  "scripts": {
+    "lint": "tslint -c ../../tslint.json 'src/**/*.{ts,tsx,js,jsx}'",
+    "build:fast": "rm -rf dist && webpack",
+    "build": "yarn run lint && yarn run build:fast",
+    "build:prod": "yarn run build --mode production --devtool none"
+  },
+  "dependencies": {
+    "vscode-languageserver": "^6.1.1",
+    "vscode-languageserver-textdocument": "^1.0.1",
+    "vscode-tfjs-toxicity-api": "0.0.1",
+    "@kogito-tooling/backend": "0.7.0",
+    "@tensorflow-models/toxicity": "1.2.2",
+    "@tensorflow/tfjs-node": "2.4.0",
+    "@types/express": "4.11.1",
+    "@types/cors": "2.8.6",
+    "axios": "0.20.0",
+    "cors": "2.8.5",
+    "express": "4.17.1"
+  },
+  "babel": {
+    "presets": [
+      "@babel/env",
+      "@babel/react"
+    ]
+  }
+}

@@ -6,37 +6,34 @@ import {
   InitializeParams,
   ProposedFeatures,
   TextDocuments,
-  TextDocumentSyncKind,
+  TextDocumentSyncKind
 } from "vscode-languageserver";
 import { TextDocument } from "vscode-languageserver-textdocument";
+import { TextClassification } from "vscode-tfjs-toxicity-api";
 
-const ENDPOINT = "http://localhost:3000/classify";
+const connection = createConnection(ProposedFeatures.all);
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
+let classifyEndpoint: string;
 
-let connection = createConnection(ProposedFeatures.all);
-let documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
-
-connection.onInitialize((_params: InitializeParams) => {
+connection.onInitialize((params: InitializeParams) => {
+  classifyEndpoint = params.initializationOptions?.classifyEndpoint;
   return {
     capabilities: {
-      textDocumentSync: TextDocumentSyncKind.Incremental,
-    },
+      textDocumentSync: TextDocumentSyncKind.Incremental
+    }
   };
 });
 
-documents.onDidChangeContent((change) => {
+documents.onDidChangeContent(change => {
   validateTextDocument(change.document);
 });
 
-interface TextClassification {
-  label: string;
-  results: Array<{
-    probabilities: Float32Array;
-    match: boolean;
-  }>;
-}
-
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   try {
+    if (classifyEndpoint === undefined) {
+      return;
+    }
+
     const regex = /\w+/g;
     const words = textDocument.getText().match(regex);
 
@@ -44,14 +41,15 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
       return;
     }
 
-    const response = await axios.post(ENDPOINT, {
-      text: words.join(" "),
+    const response = await axios.post(classifyEndpoint, {
+      text: words.join(" ")
     });
 
     const diagnostics: Diagnostic[] = [];
     let match: RegExpExecArray | null;
     let wordCount = -1;
 
+    // tslint:disable-next-line: no-conditional-assignment
     while ((match = regex.exec(textDocument.getText()))) {
       wordCount++;
       response.data.forEach((element: TextClassification) => {
@@ -63,9 +61,9 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
           severity: DiagnosticSeverity.Warning,
           range: {
             start: textDocument.positionAt(regex.lastIndex - match![0].length),
-            end: textDocument.positionAt(regex.lastIndex),
+            end: textDocument.positionAt(regex.lastIndex)
           },
-          message: `${match}: ${element.label}`,
+          message: `${match}: ${element.label}`
         });
       });
     }
