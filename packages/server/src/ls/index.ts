@@ -6,11 +6,12 @@ import {
   InitializeParams,
   ProposedFeatures,
   TextDocuments,
-  TextDocumentSyncKind
+  TextDocumentSyncKind,
 } from "vscode-languageserver";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { TextClassification } from "vscode-tfjs-toxicity-api";
 
+const REGEX_WORDS = /\w+/g;
 const connection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 let classifyEndpoint: string;
@@ -19,38 +20,35 @@ connection.onInitialize((params: InitializeParams) => {
   classifyEndpoint = params.initializationOptions?.classifyEndpoint;
   return {
     capabilities: {
-      textDocumentSync: TextDocumentSyncKind.Incremental
-    }
+      textDocumentSync: TextDocumentSyncKind.Incremental,
+    },
   };
 });
 
-documents.onDidChangeContent(change => {
+documents.onDidChangeContent((change) => {
   validateTextDocument(change.document);
 });
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   try {
-    if (classifyEndpoint === undefined) {
+    if (!classifyEndpoint) {
       return;
     }
 
-    const regex = /\w+/g;
-    const words = textDocument.getText().match(regex);
-
+    const words = textDocument.getText().match(REGEX_WORDS);
     if (!words) {
       return;
     }
 
     const response = await axios.post(classifyEndpoint, {
-      text: words.join(" ")
+      text: words.join(" "),
     });
 
     const diagnostics: Diagnostic[] = [];
     let match: RegExpExecArray | null;
     let wordCount = -1;
 
-    // tslint:disable-next-line: no-conditional-assignment
-    while ((match = regex.exec(textDocument.getText()))) {
+    while ((match = REGEX_WORDS.exec(textDocument.getText()))) {
       wordCount++;
       response.data.forEach((element: TextClassification) => {
         if (!element.results[wordCount].match) {
@@ -60,10 +58,10 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
         diagnostics.push({
           severity: DiagnosticSeverity.Warning,
           range: {
-            start: textDocument.positionAt(regex.lastIndex - match![0].length),
-            end: textDocument.positionAt(regex.lastIndex)
+            start: textDocument.positionAt(REGEX_WORDS.lastIndex - match![0].length),
+            end: textDocument.positionAt(REGEX_WORDS.lastIndex),
           },
-          message: `${match}: ${element.label}`
+          message: `${match}: ${element.label}`,
         });
       });
     }

@@ -1,9 +1,9 @@
-import { LocalHttpServer } from "@kogito-tooling/backend/dist/api";
-import { killProcess } from "@kogito-tooling/backend/dist/node";
+import { LocalHttpServer } from "@kie-tools-core/backend/dist/api";
+import { killProcess } from "@kie-tools-core/backend/dist/node";
 import * as cp from "child_process";
 import * as fs from "fs";
 import { getPortPromise } from "portfinder";
-import { SERVER_UP, ServiceId } from "vscode-tfjs-toxicity-api";
+import { SERVER_UP_MESSAGE, ServiceId } from "vscode-tfjs-toxicity-api";
 
 export class ExpressService extends LocalHttpServer {
   private activeProcess: cp.ChildProcess | undefined;
@@ -19,20 +19,20 @@ export class ExpressService extends LocalHttpServer {
   public async start(): Promise<void> {
     this.activeProcess = cp.spawn("node", [this.expressModule, String(this.port)]);
 
-    const timeoutPromise = new Promise(resolve => {
+    const timeoutPromise = new Promise((resolve) => {
       setTimeout(() => {
         resolve(false);
       }, 60000);
     });
 
-    const checkServerPromise = new Promise(resolve => {
+    const checkServerPromise = new Promise((resolve) => {
       if (!this.activeProcess || !this.activeProcess.stdout) {
         resolve(false);
         return;
       }
 
-      this.activeProcess.stdout.on("data", data => {
-        if (data.toString().includes(SERVER_UP)) {
+      this.activeProcess.stdout.on("data", (data) => {
+        if (data.toString().includes(SERVER_UP_MESSAGE)) {
           resolve(true);
         }
       });

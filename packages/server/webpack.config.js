@@ -5,13 +5,13 @@ const common = require("../../webpack.common.config");
 module.exports = [
   merge(common, {
     entry: {
-      "ls/languageServer": "./src/ls/languageServer.ts",
-      "express/express": "./src/express/express.ts"
+      "ls/languageServer": "./src/ls/index.ts",
+      "express/express": "./src/express/index.ts",
     },
     target: "node",
     output: {
-      libraryTarget: "commonjs2"
+      libraryTarget: "commonjs2",
     },
-    externals: [nodeExternals({ modulesDir: "../../node_modules" })]
-  })
+    externals: [nodeExternals({ modulesDir: "../../node_modules" })],
+  }),
 ];

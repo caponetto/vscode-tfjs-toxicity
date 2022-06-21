@@ -7,20 +7,22 @@ module.exports = [
     output: {
       library: "ToxicityClassification",
       libraryTarget: "umd",
-      umdNamedDefine: true
+      umdNamedDefine: true,
     },
     externals: {
-      vscode: "commonjs vscode"
+      vscode: "commonjs vscode",
     },
     target: "node",
     entry: {
-      "extension/extension": "./src/extension/extension.ts"
+      "extension/extension": "./src/extension/extension.ts",
     },
     plugins: [
-      new CopyWebpackPlugin([
-        { from: "../server/dist/ls/languageServer.js", to: "server/ls.js" },
-        { from: "../server/dist/express/express.js", to: "server/express.js" }
-      ])
-    ]
-  })
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: "../server/dist/ls/languageServer.js", to: "server/ls.js" },
+          { from: "../server/dist/express/express.js", to: "server/express.js" },
+        ],
+      }),
+    ],
+  }),
 ];

@@ -1,2 +1,13 @@
-node_modules/
-dist/
+**/node_modules/
+**/dist/
+**/target
+**/local
+**/*.ipr
+**/*.iws
+**/*.iml
+**/.classpath
+**/.project
+**/.settings
+**/.DS_Store
+**/.idea
+**/.log
