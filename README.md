@@ -29,7 +29,9 @@ VS Code will detect whether text contains toxic content such as _threatening lan
 ## Troubleshooting
 
 Execute the following command if you run into issues when loading the model:
+
 ```bash
 $ npm rebuild @tensorflow/tfjs-node --build-from-source
 ```
+
 Then, build the packages with `yarn` again.

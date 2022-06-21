@@ -1,7 +1,7 @@
 {
   "name": "vscode-tfjs-toxicity-api",
   "description": "Text toxicity classifier (API)",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -13,15 +13,18 @@
     "url": "https://github.com/caponetto/vscode-tfjs-toxicity.git"
   },
   "scripts": {
-    "lint": "tslint -c ../../tslint.json 'src/**/*.{ts,tsx,js,jsx}'",
-    "build:fast": "rm -rf dist && webpack",
-    "build": "yarn run lint && yarn run build:fast",
-    "build:prod": "yarn run build --mode production --devtool none"
+    "lint": "yarn eslint ./src --ext .ts,.tsx",
+    "build:dev": "rimraf dist && webpack --mode development",
+    "build:prod": "yarn lint && rimraf dist && webpack --mode production"
   },
   "babel": {
     "presets": [
-      "@babel/env",
-      "@babel/react"
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
     ]
   }
 }

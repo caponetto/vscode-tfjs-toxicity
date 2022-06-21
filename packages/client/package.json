@@ -1,7 +1,7 @@
 {
   "name": "vscode-tfjs-toxicity-client",
   "description": "Text toxicity classifier (Client)",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "license": "Apache-2.0",
   "publisher": "caponetto",
   "engines": {
@@ -16,25 +16,25 @@
     "url": "https://github.com/caponetto/vscode-tfjs-toxicity.git"
   },
   "scripts": {
-    "package:prod": "cross-var \"vsce package --yarn -o ./dist/toxicity_classifier_vscode_extension_$npm_package_version.vsix\"",
-    "compile": "webpack",
-    "watch": "webpack",
-    "build:fast": "rm -rf dist && webpack",
-    "build": "yarn run build:fast",
-    "build:prod:linux:darwin": "yarn run build --mode production --devtool none && yarn run package:prod",
-    "build:prod:windows": "yarn run build --mode production --devtool none && yarn run package:prod",
-    "build:prod": "run-script-os"
+    "lint": "yarn eslint ./src --ext .ts,.tsx",
+    "pack:extension": "vsce package --yarn -o ./dist/toxicity_classifier_vscode_extension_$npm_package_version.vsix --githubBranch main",
+    "build:dev": "rimraf dist && webpack --mode development",
+    "build:prod": "yarn lint && rimraf dist && webpack --mode production && yarn pack:extension"
   },
   "dependencies": {
-    "@kogito-tooling/backend": "0.7.0",
-    "vscode-languageclient": "6.1.3",
-    "vscode-tfjs-toxicity-api": "0.0.1",
-    "vscode-tfjs-toxicity-server": "0.0.1"
+    "@kie-tools-core/backend": "^0.20.0",
+    "vscode-languageclient": "^6.1.3",
+    "vscode-tfjs-toxicity-api": "0.0.0",
+    "vscode-tfjs-toxicity-server": "0.0.0"
   },
   "babel": {
     "presets": [
-      "@babel/env",
-      "@babel/react"
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
     ]
   }
 }

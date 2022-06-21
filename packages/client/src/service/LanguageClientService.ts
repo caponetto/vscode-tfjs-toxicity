@@ -1,4 +1,4 @@
-import { Service } from "@kogito-tooling/backend/dist/api";
+import { Service } from "@kie-tools-core/backend/dist/api";
 import * as fs from "fs";
 import { workspace } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
@@ -19,18 +19,18 @@ export class LanguageClientService implements Service {
       debug: {
         module: this.lsModule,
         transport: TransportKind.ipc,
-        options: { execArgv: ["--nolazy", "--inspect=6009"] }
-      }
+        options: { execArgv: ["--nolazy", "--inspect=6009"] },
+      },
     };
 
     const clientOptions: LanguageClientOptions = {
       documentSelector: [{ scheme: "file", language: "plaintext" }],
       synchronize: {
-        fileEvents: workspace.createFileSystemWatcher("**/.clientrc")
+        fileEvents: workspace.createFileSystemWatcher("**/.clientrc"),
       },
       initializationOptions: {
-        classifyEndpoint: this.classifyEndpoint
-      }
+        classifyEndpoint: this.classifyEndpoint,
+      },
     };
 
     this.languageClient = new LanguageClient(this.identify(), this.identify(), serverOptions, clientOptions);
